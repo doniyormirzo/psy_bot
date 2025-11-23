@@ -1,6 +1,8 @@
+import os
+from flask import Flask, request
 import telebot
 from telebot import types
-server = Flask(psy bot)
+
 # =========================
 #  SOZLAMALAR
 # =========================
@@ -13,6 +15,7 @@ TELEGRAM_PROFILE_URL = "https://t.me/mirzavaliyev"
 INSTAGRAM_URL = "https://instagram.com/doniyor__mirzo"
 
 bot = telebot.TeleBot(API_TOKEN, parse_mode="HTML")
+server = Flask(__name__)
 
 # =========================
 #  HOLATLAR
@@ -210,9 +213,9 @@ CATEGORY_TESTS = {
             "unda sog‘lom rivojlanish uchun juda katta imkoniyat yaratadi."
         ),
         "exercise": (
-            "🔹 Mashq 1: Bolaga har kuni 'Bugun seni nimadan xursand bo‘ldi?' va "
-            "'Nimadan xafa bo‘lding?' degan ikki savolni bering.\n"
-            "🔹 Mashq 2: Bolaning hissiyotini rasm orqali ifoda etishni taklif qiling "
+            "🔹 Mashq 1: Bolaga har kuni 'Bugun seni nimadan xурсand bo‘ldi?' va "
+            "'Nimадан xafa bo‘ldинг?' degan ikki savолни bering.\n"
+            "🔹 Mashq 2: Bolaning hissiyotini rasm orqali ifoda етishni taklif қилing "
             "('Kayfiyatingni chizib ko‘rsat'). Rasm orqali suhbatlashishga harakat qiling.\n"
         ),
     },
@@ -232,7 +235,7 @@ CATEGORY_TESTS = {
         ),
         "exercise": (
             "🔹 Mashq 1: Bir hafta davomida hamma xarajatlaringizni yozib boring. "
-            "Faqat kuzatish, o‘zingizni ayblamasdan.\n"
+            "Faqat kuzatish, o‘zingizni ayblamasдан.\n"
             "🔹 Mashq 2: 'Majburiy', 'Muhim', 'Keyinroq bo‘lsa bo‘ladi' degan 3 toifaga xarajatlarni ajratib chiqing.\n"
         ),
     },
@@ -242,7 +245,7 @@ CATEGORY_TESTS = {
             "Sizni bezovta qilayotgan muammo aniq nomlash qiyin bo‘lgandek tuyuladimi?",
             "Kayfiyat, motivatsiya yoki munosabatlaringizda 'nimadir joyida emas' degan umumiy his bormi?",
             "Ba’zan tushuntirib bo‘lmaydigan ichki bo‘shlik yoki ma’nosizlik hissi bo‘ladimi?",
-            "O‘zingizni tushuntirishga harakat qilganingizda, boshqalar unchalik tushunmaydigandek ko‘rinyaptimi?",
+            "O‘zingizni tushuntirishga harakat qilganingizда, boshqalar unchalik tushunmaydigandek ko‘rinyaptimi?",
             "Yordam so‘rash sizga biroz qiyin, lekin hozir bu qadamni baribir qilayotgan bo‘lsangiz, bu sizga tanishmi?",
         ],
         "support": (
@@ -553,7 +556,7 @@ def handle_phone_text(message: types.Message, text: str):
 
 
 # =========================
-#  4-BOSQICH: SEANS TURINI TANLASH
+#  4-BOSQICH: SEANS TURINI TANЛASH
 # =========================
 
 def ask_session_type(chat_id: int):
@@ -600,7 +603,7 @@ def handle_time_slot(message: types.Message, text: str):
     elif text == "📝 O‘zimga qulay vaqtni yozaman":
         bot.send_message(
             chat_id,
-            "Marhamat, sizga qulay bo‘lgan kun va soatni yozib qoldiring "
+            "Marhamat, sizга qulay bo‘lgan kun va soatni yozib qoldiring "
             "(masalan: 'Juma kuni 21:00', yoki 'Dushanba, 11:30').",
             reply_markup=types.ReplyKeyboardRemove(),
         )
@@ -670,7 +673,7 @@ def finish_intake(message: types.Message):
         chat_id,
         "Rahmat, barcha ma’lumotlar muvaffaqiyatli qabul qilindi.\n\n"
         "Siz tomonidan bo‘lingan fikr va his-tuyg‘ular juda qimmatli. "
-        "Yaqqol ko‘rinib turibdiki, siz o‘z hayotingiz va ruhiy holatingizni yaxshilashga jiddiy qarayapsiz.",
+        "Yaqqol ko‘rinib turibdiki, siz o‘z hayotingiz va ruhiy holatingizni yaxshilashга jiddiy qarayapsiz.",
         reply_markup=types.ReplyKeyboardRemove(),
     )
 
@@ -705,13 +708,8 @@ def finish_intake(message: types.Message):
 
 
 # =========================
-#  ISHGA TUSHIRISH
+#  WEBHOOK ROUTE-LAR
 # =========================
-
-import os
-from flask import Flask, request
-import telebot
-# === WEBHOOK ROUTE-LAR ===
 
 @server.route(f"/{API_TOKEN}", methods=['POST'])
 def telegram_webhook():
@@ -735,7 +733,7 @@ if __name__ == "__main__":
     external_url = os.environ.get("RENDER_EXTERNAL_URL")
 
     if external_url:
-        webhook_url = f"{external_url}/{"8436935672:AAGc_mYCtMHuJ81hS2miBoSpx0ttZf9nHkU"}"
+        webhook_url = f"{external_url}/{API_TOKEN}"
         try:
             bot.remove_webhook()
         except Exception:
@@ -747,6 +745,3 @@ if __name__ == "__main__":
 
     # Flask serverni ishga tushiramiz
     server.run(host="0.0.0.0", port=port)
-
-
-
