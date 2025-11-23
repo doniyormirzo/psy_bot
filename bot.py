@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-
+server = Flask(__name__)
 # =========================
 #  SOZLAMALAR
 # =========================
@@ -708,6 +708,44 @@ def finish_intake(message: types.Message):
 #  ISHGA TUSHIRISH
 # =========================
 
+import os
+from flask import Flask, request
+import telebot
+# === WEBHOOK ROUTE-LAR ===
+
+@server.route(f"/{API_TOKEN}", methods=['POST'])
+def telegram_webhook():
+    # Telegram yuborgan JSON ni o‘qib, TeleBot-ga beramiz
+    json_str = request.get_data().decode("utf-8")
+    update = telebot.types.Update.de_json(json_str)
+    bot.process_new_updates([update])
+    return "OK", 200
+
+
+@server.route("/")
+def index():
+    return "Psixolog-bot ishlayapti", 200
+
+
 if __name__ == "__main__":
-    print("Psixolog-bot ishga tushdi...")
-    bot.infinity_polling()
+    # Render tomonidan beriladigan port
+    port = int(os.environ.get("PORT", 5000))
+
+    # Render avtomatik beradi: tashqi URL (https://psy-bot.onrender.com kabi)
+    external_url = os.environ.get("RENDER_EXTERNAL_URL")
+
+    if external_url:
+        webhook_url = f"{external_url}/{API_TOKEN}"
+        try:
+            bot.remove_webhook()
+        except Exception:
+            pass
+        bot.set_webhook(url=webhook_url)
+        print("Webhook o‘rnatildi:", webhook_url)
+    else:
+        print("RENDER_EXTERNAL_URL topilmadi, webhook sozlanmadi")
+
+    # Flask serverni ishga tushiramiz
+    server.run(host="0.0.0.0", port=port)
+
+
