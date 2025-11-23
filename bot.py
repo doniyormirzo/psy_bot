@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-server = Flask(__name__)
+server = Flask(psy bot)
 # =========================
 #  SOZLAMALAR
 # =========================
@@ -735,7 +735,7 @@ if __name__ == "__main__":
     external_url = os.environ.get("RENDER_EXTERNAL_URL")
 
     if external_url:
-        webhook_url = f"{external_url}/{API_TOKEN}"
+        webhook_url = f"{external_url}/{"8436935672:AAGc_mYCtMHuJ81hS2miBoSpx0ttZf9nHkU"}"
         try:
             bot.remove_webhook()
         except Exception:
@@ -747,5 +747,6 @@ if __name__ == "__main__":
 
     # Flask serverni ishga tushiramiz
     server.run(host="0.0.0.0", port=port)
+
 
 
